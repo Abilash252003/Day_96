@@ -1,0 +1,124 @@
+// 100 days of RTL //
+
+// Abilash P //
+
+// Automatic car control //
+
+module automatic_car_control_tb();
+  reg clk, rst, front_object, left_object, right_object, back_object;
+  wire off_val, front_val, left_val, right_val, back_val;
+  wire [2:0]vehicle_movement;
+  
+  automatic_car_control DUT (
+    .clk(clk),
+    .rst(rst),
+    .front_object(front_object),
+    .left_object(left_object),
+    .right_object(right_object),
+    .back_object(back_object),
+    .off_val(off_val),
+    .front_val(front_val),
+    .left_val(left_val),
+    .right_val(right_val),
+    .back_val(back_val),
+    .vehicle_movement(vehicle_movement)
+  );
+  
+  initial
+  begin
+    clk = 1;
+    forever #5 clk = ~clk;
+  end
+  
+  initial
+    begin
+      front_object = 1'b0;
+      left_object  = 1'b0;
+      right_object = 1'b0;
+      back_object  = 1'b0;
+      rst = 1'b1;
+      #10
+      
+      rst = 1'b0;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b0;
+      right_object = 1'b0;
+      back_object  = 1'b0;
+      #10;
+      
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b0;
+      back_object  = 1'b0;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b1;
+      back_object  = 1'b0;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b0;
+      back_object  = 1'b1;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b1;
+      back_object  = 1'b1;
+      #10;
+      
+      front_object = 1'b0;
+      left_object  = 1'b0;
+      right_object = 1'b0;
+      back_object  = 1'b0;
+      rst = 1'b1;
+      #10
+      
+      rst = 1'b0;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b1;
+      back_object  = 1'b0;
+      #10;
+      
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b0;
+      back_object  = 1'b0;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b0;
+      right_object = 1'b0;
+      back_object  = 1'b0;
+      #10;
+      
+      front_object = 1'b0;
+      left_object  = 1'b1;
+      right_object = 1'b0;
+      back_object  = 1'b1;
+      #10;
+      
+      front_object = 1'b1;
+      left_object  = 1'b1;
+      right_object = 1'b1;
+      back_object  = 1'b0;
+      #20;
+      $finish;
+    end
+  
+  initial
+  begin
+    $dumpfile("dump.vcd");
+    $dumpvars(1);
+  end
+endmodule
