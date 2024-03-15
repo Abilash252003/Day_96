@@ -1,0 +1,192 @@
+// 100 days of RTL //
+
+// Abilash P //
+
+// Automatic car control //
+
+module automatic_car_control(clk, rst, front_object, left_object, right_object, back_object, off_val, front_val, left_val, right_val, back_val, vehicle_movement);
+  
+  parameter OFF = 3'b000;
+  parameter FM  = 3'b001;
+  parameter LM  = 3'b010;
+  parameter RM  = 3'b011;
+  parameter BM  = 3'b100;
+  
+  input clk, rst, front_object, left_object, right_object, back_object;
+  output reg off_val, front_val, left_val, right_val, back_val;
+  output reg [2:0]vehicle_movement;
+  
+  reg[2:0]state, next_state;
+  
+  initial
+    begin
+      off_val     <= 0;
+      front_val   <= 0;
+      left_val    <= 0;
+      right_val   <= 0;
+      back_val    <= 0;
+    end
+  
+  always @(posedge clk)
+    begin
+      if(rst)
+        state<=OFF;
+      else
+        state<=next_state;
+    end
+  
+  always @(state or front_object or left_object or right_object or back_object)
+    begin
+      case(state)
+        OFF: begin
+          off_val         <= 1;
+          front_val       <= 0;
+          left_val        <= 0;
+          right_val       <= 0;
+          back_val        <= 0;
+          
+          vehicle_movement<= 0;
+          
+          if(front_object==0)
+            next_state<=FM;
+          else
+            begin
+              if(left_object==0)
+                next_state<=LM;
+              else
+                begin
+                  if(right_object==0)
+                    next_state<=RM;
+                  else
+                    begin
+                      if(back_object==0)
+                        next_state<=BM;
+                      else
+                        next_state<=OFF;
+                    end
+                end
+            end
+        end
+        
+        FM: begin
+          off_val         <= 0;
+          front_val       <= 1;
+          left_val        <= 0;
+          right_val       <= 0;
+          back_val        <= 0;
+          
+          vehicle_movement<= 1;
+          
+          if(front_object==0)
+            next_state<=FM;
+          else
+            begin
+              if(left_object==0)
+                next_state<=LM;
+              else
+                begin
+                  if(right_object==0)
+                    next_state<=RM;
+                  else
+                    begin
+                      if(back_object==0)
+                        next_state<=BM;
+                      else
+                        next_state<=OFF;
+                    end
+                end
+            end
+        end
+        
+        LM: begin
+          off_val         <= 0;
+          front_val       <= 0;
+          left_val        <= 1;
+          right_val       <= 0;
+          back_val        <= 0;
+          
+          vehicle_movement<= 2;
+          
+          if(front_object==0)
+            next_state<=FM;
+          else
+            begin
+              if(left_object==0)
+                next_state<=LM;
+              else
+                begin
+                  if(right_object==0)
+                    next_state<=RM;
+                  else
+                    begin
+                      if(back_object==0)
+                        next_state<=BM;
+                      else
+                        next_state<=OFF;
+                    end
+                end
+            end
+        end
+        
+        RM: begin
+          off_val         <= 0;
+          front_val       <= 0;
+          left_val        <= 0;
+          right_val       <= 1;
+          back_val        <= 0;
+          
+          vehicle_movement<= 3;
+          
+          if(front_object==0)
+            next_state<=FM;
+          else
+            begin
+              if(left_object==0)
+                next_state<=LM;
+              else
+                begin
+                  if(right_object==0)
+                    next_state<=RM;
+                  else
+                    begin
+                      if(back_object==0)
+                        next_state<=BM;
+                      else
+                        next_state<=OFF;
+                    end
+                end
+            end
+        end
+        
+        BM: begin
+          off_val         <= 0;
+          front_val       <= 0;
+          left_val        <= 0;
+          right_val       <= 0;
+          back_val        <= 1;
+          
+          vehicle_movement<=-1;
+          
+          if(front_object==0)
+            next_state<=FM;
+          else
+            begin
+              if(left_object==0)
+                next_state<=LM;
+              else
+                begin
+                  if(right_object==0)
+                    next_state<=RM;
+                  else
+                    begin
+                      if(back_object==0)
+                        next_state<=BM;
+                      else
+                        next_state<=OFF;
+                    end
+                end
+            end
+        end
+      endcase
+    end
+endmodule
